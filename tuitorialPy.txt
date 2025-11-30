@@ -1,0 +1,16 @@
+//////
+//COPY DEEPCOPY
+That's a crucial concept in programming, often called Shallow Copy versus Deep Copy!
+
+The behavior you are trying to avoid—where one variable modification affects another because they share the same memory address—happens by default with mutable objects (like lists and dictionaries) when you use the simple assignment operator (=).
+
+To prevent this "aliasing" and ensure you get a completely new object that lives at a different memory address, you need to use specific functions.
+
+The Solution: The copy Module
+You should use the copy module, which provides two primary functions for creating copies:
+
+copy.copy(): For a Shallow Copy.
+
+copy.deepcopy(): For a Deep Copy.
+
+The correct function depends on whether your data structure is nested (a list containing other lists, a dictionary containing other dictionaries, etc.).

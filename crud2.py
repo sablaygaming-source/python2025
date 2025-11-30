@@ -180,8 +180,19 @@ def fMain( ): #2
         if ch.upper() == 'S': #4
 
             ret = fFindData( "joy", 1, productData )
-
             print(f"\ndebug {productData[ret]= }, {ret= }")
+            
+            
+            #a test of sell.csv
+
+            testData = [];
+            testData.append({'idKey': '1', 'date': '11/29/2025', 'id': '2', 'item': 'pride', 'pcs': '1', 'amount': '11', 'totalAmount': ''})
+            testData.append({'idKey': '1', 'date': '11/29/2025', 'id': '3', 'item': 'safeguard', 'pcs': '2', 'amount': '24', 'totalAmount': '23'})
+            testData.append(testData[1].copy())
+            
+            testData[2]['totalAmount'] = '59'
+            
+            fWriteCsv('sell.csv',testData)
             #fSell(sellData, productData)
             pass                   
         #4
