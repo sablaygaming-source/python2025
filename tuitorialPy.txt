@@ -13,4 +13,94 @@ copy.copy(): For a Shallow Copy.
 
 copy.deepcopy(): For a Deep Copy.
 
+include this   #import copy
 The correct function depends on whether your data structure is nested (a list containing other lists, a dictionary containing other dictionaries, etc.).
+
+
+
+////////
+//FLOAT  INT FUNCTION
+The Python float() Conversion Function
+
+The float() function is Python's standard tool for converting strings (and integers) into floating-point numbers.
+
+1. Core Usage
+
+The function attempts to parse the input string and represent it as a number with a decimal component (i.e., a float).
+
+Syntax: float(string_number)
+
+Input String
+
+float() Output
+
+Resulting Type
+
+"123.45"
+
+123.45
+
+float
+
+"78"
+
+78.0
+
+float (Appends .0)
+
+"-5.2e-3"
+
+-0.0052
+
+float (Handles scientific notation)
+
+2. Why Use float() (The "Double" Equivalent)
+
+When dealing with financial calculations, measurements, or any calculation requiring decimal precision, converting to float ensures that the standard arithmetic operators (+, -, *, /) work correctly with the fractional parts.
+
+In Python:
+
+int: Whole numbers (e.g., 5, -100)
+
+float: Decimal/Fractional numbers (e.g., 5.0, -100.5, 3.14159)
+
+3. Error Handling (Mandatory)
+
+If the string contains any characters that cannot be interpreted as part of a valid number (e.g., letters, symbols, or multiple decimal points), float() will raise a ValueError. It is crucial to wrap conversion attempts in a try...except block to prevent your program from crashing.
+
+try:
+    number = float("12.3 dollars") # Invalid string
+except ValueError:
+    print("Invalid input for conversion.")
+
+
+//////
+// FORMAT   :.2F
+
+//use string literal with :.2f then func format
+formatted_dot_format = "{:.2f}".format(integer_value)
+
+or in the tail of the last variable ex f"{ v:.2f}"
+subSell['amount'] = f"{float( pProductData[ret]['amount'] ) * float(strInp):.2f}" 
+
+
+///////
+// DICT DISPLAY KEYS AND VALUES
+
+ assume pData is array of dict
+    ..displaying the keys, the keys always given in on set dict
+    ..i use pData[0] the first element
+    for keys in pData[0]:#5 
+        print(keys + "     ", sep = "",end = "")
+    #5
+    
+    ..pData is the main array of dict vDict each 1 set element dict
+    for vDict in pData:#3
+        ..vDict is a 1 set of dict every element
+    
+        for keys in vDict:#4
+            ..to acces the value use keys ex: vDict[keys]
+	    print(vDict[keys] + "     ", sep = "", end = "")
+        #4
+        print("")
+    #3

@@ -15,21 +15,6 @@ def fWriteCsv(filename: str, data: DataList) -> None: #2
         filename: The path to the CSV file to be created or overwritten.
         data: A list of dictionaries, where each dictionary is a row.
     """
-    if not data:
-        print("Error: Input data list is empty. Cannot write CSV.")
-        return
-
-    # --- 1. Dynamically determine the fieldnames (column headers) ---
-    #all_keys = set()
-    #for row_dict in data:
-        # Add all keys from the current dictionary to the set (to ensure uniqueness)
-        all_keys.update(row_dict.keys())
-
-    # Convert the set of keys to a list, which DictWriter requires
-    #fieldnames = list(all_keys)
-    
-    # Optional: Sort keys alphabetically for predictable column order
-    # fieldnames.sort() 
     if len(data) == 0: #11
         print("\nRSM error must not input blank")
         return 
@@ -61,9 +46,9 @@ def fWriteCsv(filename: str, data: DataList) -> None: #2
         print(f"Successfully wrote {len(data)} records to {filename}.")
 
     except IOError as e: #4
-        print(f"Error writing file: {e}")
+        print(f"RSM Error writing file: {e}")
     except Exception as e: #4
-        print(f"An unexpected error occurred: {e}")
+        print(f"RSM Error An unexpected error occurred: {e}")
     #4
 #2
 
@@ -72,7 +57,7 @@ def fReadCsv(filename): #2
     
     # Check if the file exists before trying to read it
     if not os.path.exists(filename):#3
-        print(f"Error: File '{filename}' not found.")
+        print(f"RSM Error: File '{filename}' not found.")
         return []
     #3  
     data_list = []
@@ -86,70 +71,159 @@ def fReadCsv(filename): #2
             # csv.DictReader maps the values in each row to the fieldnames in the first row.
             reader = csv.DictReader(csvfile)
             
+            #print(f"\ndebug {reader= }")
+
             # The reader is an iterator, so we convert it to a list
             for row in reader: #
+                #print(f"\ndebug {row= }")
+
                 data_list.append(row)
             #    
         return data_list
     #5
 
     except IOError as e: #4
-        print(f"Error reading file: {e}")
+        print(f"RSM Error reading file: {e}")
         return []
     #4
 
 #2
-def fSell(pSellData, pAddData):#2
+def fSell(pSellData, pProductData, pLastIdKey):#2
     subSell = {'idKey': '', 'date': '', 'id': '', 'item': '', 'pcs': '', 'amount': ''}
-    #date input process
-    while(True) :#7
+    pLastIdKey = int(pLastIdKey) + 1
+    subSell['idKey'] = pLastIdKey
+    totalAmount = 0
+    pastDate = False
+    while(True): #25
+        #not i assume that pLastIdKey s lowest value in empty is 0
+        
+        if pastDate == False: #23
+        #date input process
+            while(True) :#7
 
-        strInp = input('input date: ')
+                strInp = input('\ninput date: ')
 
-        if strInp == "":#
-            print('blank is not valid...')
-            continue    
-        #
-        subSell['date'] = strInp
-        break
-    #7
+                if strInp == "":#
+                    print('blank is not valid...')
+                    continue    
+                #
+                subSell['date'] = strInp
+                break
+            #7
+        #23
+        #BOOKMARK
+        #id and item input, process
+        ret = 0
+        breakId = False
+        while(True): #8
 
-    #id and item input, process
-    while(True): #8
+            strInp = input('\nselect what to input i id\nt item:  ')
 
-        strInp = input('select what to input i id\nn name:  ')
+            if strInp.upper() == 'I':#12
+                
+                while(True): #11
+                    strInpTwo = input('\ninput id: ')
+                    if strInpTwo == "": #10
+                        print("\nblank is not valid...")
+                        continue
+                    #10
+                    print("\ndebug strInpTwo ", strInpTwo)
+                    ret = fFindData(strInpTwo, 0, pProductData)
+                    if(ret == -1): #14
+                        print("\ndid not found the ", strInpTwo)
+                        continue
+                    #14
+                    subSell['id'] = strInpTwo
+                    subSell['item'] = pProductData[ret]['item']
+                    breakId = True
+                    break
+                #11
 
-        if strInp.upper() == 'I':#
+            elif strInp.upper() == 'T':#12
+                
+                while(True): #11
+                    strInpTwo = input('\ninput item:  ')
+                    if strInpTwo == "": #10
+                        print("\nblank is not valid...")
+                        continue
+                    #10
+                    ret = fFindData(strInpTwo, 1, pProductData)
+                    if(ret == -1): #14
+                        print("\ndid not found the ", strInpTwo)
+                        continue
+                    #14
+                    subSell['item'] = strInpTwo
+                    subSell['id'] = pProductData[ret]['id']
+                    breakId = True
+                    break
+                #11
+
+            #12
+            if breakId == True:#22
+                break
+            #22
+        #8
+
+        #pcs process
+        while(True) :#7
+
+            strInp = input('\ninput pcs: ')
+
+            if strInp == "" or int(strInp) == 0: #10
+                print('blank is not valid and non numeric and 0 is not valid...')
+                continue    
+            #10
+            subSell['pcs'] = int(strInp)
+            subSell['amount'] = f"{float( pProductData[ret]['amount'] ) * float(strInp):.2f}" 
+            totalAmount = float( totalAmount)  + float(subSell['amount'])   
+            break   
+        #7
+        
+        print(f"the result {subSell}")
+        
+        #question if will save and leave
+        while(True):#22
             
-            while(True): #11
-                strInpTwo = input('\ninput id: ')
-                if strInpTwo == "": #10
-                    print("\nblank is not valid...")
-                    continue
-                #10
+            strQue = input('\ndo you want to add another transaction Y or N')
+            if strQue == "": #21
+                print("\nnot a valid input ")
+            #21
 
-            #11
-
-        elif strInp.upper() == 'N':#
-            print("part of menu ")
-        #
-        #subSell['date'] = ch
-    #8
-
+            if strQue.upper() == 'Y':#23
+                #//pProductData.append(subSell.copy() )
+                pastDate = True
+                break
+            #23
+        
+            if strQue.upper() == 'N':#23
+                #save and exiting prog
+                subSell['totalAmount'] = totalAmount
+                #//pProductData.append(subSell.copy() )
+                return
+            
+            #23
+        
+        #22
+        
+    #25 
+       
 #2
 
 def fFindData(pCompare, pKey, pData, pStartInd = 0) : #2
-
+    #BOOKMARK
     if len(pData) == 0: #3
         return -1
     #3
 
-    i = 0 
+
+    i = pStartInd 
     for sDict in pData: #4
         j = 0
         for keys in sDict: #5
-            if pKey == j: #7
-                 if sDict[keys] == pCompare:#8
+            if int(pKey) == j: #7
+                 
+                #print("\ndebug sDict[keys] ", sDict[keys], " pCompare ", pCompare)
+                if sDict[keys] == pCompare:#8
                     #get the target
                     return i 
                 #8
@@ -162,9 +236,25 @@ def fFindData(pCompare, pKey, pData, pStartInd = 0) : #2
     #didnot found any
     return -1
 #2
+#print the whole set of data with prompt
+#assuming that array of dict will be given but 1 dimension only
+def fPrintData(pData = [], pPrompt = "", pLen = 0):#2
 
+    print(pPrompt)
+    for keys in pData[0]:#5
+        print(keys + "     ", sep = "",end = "")
+    #5
+    print("")
+    for vDict in pData:#3
+        for keys in vDict:#4
+            print(vDict[keys] + "     ", sep = "", end = "")
+        #4
+        print("")
+    #3
+#2
 def fMain( ): #2
 
+    #assuming all data accepts empty and have load, null and undefined assume will not enter
     sellData = []
     productData = []
 
@@ -178,23 +268,13 @@ def fMain( ): #2
         ch = input("input:  ")
 
         if ch.upper() == 'S': #4
-
-            ret = fFindData( "joy", 1, productData )
-            print(f"\ndebug {productData[ret]= }, {ret= }")
-            
-            
-            #a test of sell.csv
-
-            testData = [];
-            testData.append({'idKey': '1', 'date': '11/29/2025', 'id': '2', 'item': 'pride', 'pcs': '1', 'amount': '11', 'totalAmount': ''})
-            testData.append({'idKey': '1', 'date': '11/29/2025', 'id': '3', 'item': 'safeguard', 'pcs': '2', 'amount': '24', 'totalAmount': '23'})
-            testData.append(testData[1].copy())
-            
-            testData[2]['totalAmount'] = '59'
-            
-            fWriteCsv('sell.csv',testData)
-            #fSell(sellData, productData)
-            pass                   
+            #BOOKMARK
+            fSell(sellData, productData, len(productData))
+                              
+        elif ch.upper() == 'V': #4
+            #BOOKMARK
+            fPrintData(pLen = len(sellData), pData = sellData, pPrompt = "\nthis is sellData views ")
+                              
         #4
         elif ch.upper() == 'Q':#4
             break
