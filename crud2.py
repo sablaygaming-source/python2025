@@ -25,7 +25,7 @@ def fWriteCsv(filename: str, data: DataList) -> None: #2
         fieldnames.append(keys) 
     #5
 
-    print(f"Detected Fieldnames: {fieldnames}")
+    #print(f"Detected Fieldnames: {fieldnames}")
     #print(f"--- Writing data to {filename} ---")
 
     try: #4
@@ -43,7 +43,7 @@ def fWriteCsv(filename: str, data: DataList) -> None: #2
             writer.writerows(data)
         #7
             
-        print(f"Successfully wrote {len(data)} records to {filename}.")
+        print(f"Successfully wrote save records to {filename}.")
 
     except IOError as e: #4
         print(f"RSM Error writing file: {e}")
@@ -89,9 +89,10 @@ def fReadCsv(filename): #2
 
 #2
 def fSell(pSellData, pProductData, pLastIdKey):#2
-    subSell = {'idKey': '', 'date': '', 'id': '', 'item': '', 'pcs': '', 'amount': ''}
+    subSell = {'idKey': '', 'date': '', 'id': '', 'item': '', 'pcs': '', 'amount': '', 'totalAmount':''}
+    subDisplay = []
     pLastIdKey = int(pLastIdKey) + 1
-    subSell['idKey'] = pLastIdKey
+    subSell['idKey'] = f"{pLastIdKey}"
     totalAmount = 0
     pastDate = False
     while(True): #25
@@ -127,7 +128,8 @@ def fSell(pSellData, pProductData, pLastIdKey):#2
                         print("\nblank is not valid...")
                         continue
                     #10
-                    print("\ndebug strInpTwo ", strInpTwo)
+                    
+                    #print("\ndebug strInpTwo ", strInpTwo)
                     ret = fFindData(strInpTwo, 0, pProductData)
                     if(ret == -1): #14
                         print("\ndid not found the ", strInpTwo)
@@ -173,14 +175,18 @@ def fSell(pSellData, pProductData, pLastIdKey):#2
                 print('blank is not valid and non numeric and 0 is not valid...')
                 continue    
             #10
-            subSell['pcs'] = int(strInp)
+            subSell['pcs'] = f"{int( float(strInp) )}"
             subSell['amount'] = f"{float( pProductData[ret]['amount'] ) * float(strInp):.2f}" 
-            totalAmount = float( totalAmount)  + float(subSell['amount'])   
+            totalAmount = f"{float( totalAmount)  + float(subSell['amount']):.2f}"  
+            subDisplay.append(subSell.copy()) 
             break   
         #7
         
-        print(f"the result {subSell}")
+        #print(f"the result {subSell}\nTOTAL AMOUNT IS {totalAmount}")
+        #fPrintData(pSingleData = subSell, pMaxStr = 15, pPrompt='\nresult of your input data')
+        fPrintData(pData = subDisplay, pMaxStr = 15, pPrompt='\nresult of your input data', pLen = len(subDisplay))
         
+        print(f"\nTOTAL AMOUNT IS {totalAmount}")
         #question if will save and leave
         while(True):#22
             
@@ -190,16 +196,18 @@ def fSell(pSellData, pProductData, pLastIdKey):#2
             #21
 
             if strQue.upper() == 'Y':#23
-                #//pProductData.append(subSell.copy() )
+                pSellData.append(subSell.copy() )
                 pastDate = True
+                fWriteCsv('sell.csv', pSellData )
                 break
             #23
         
             if strQue.upper() == 'N':#23
                 #save and exiting prog
                 subSell['totalAmount'] = totalAmount
-                #//pProductData.append(subSell.copy() )
-                return
+                pSellData.append(subSell.copy() )
+                fWriteCsv('sell.csv', pSellData )
+                return True
             
             #23
         
@@ -238,19 +246,36 @@ def fFindData(pCompare, pKey, pData, pStartInd = 0) : #2
 #2
 #print the whole set of data with prompt
 #assuming that array of dict will be given but 1 dimension only
-def fPrintData(pData = [], pPrompt = "", pLen = 0):#2
+def fPrintData(pData = [], pSingleData = {}, pPrompt = "", pLen = 0, pMaxStr = 15):#2
 
     print(pPrompt)
+
+    if len(pSingleData) != 0 :#10
+        print("")
+        for keys in pSingleData:#4
+            print(f"{keys:<{pMaxStr}}", sep = "", end = "")
+        #4        
+        print("")
+        for keys in pSingleData:#10
+            print(f"{pSingleData[keys]:<{pMaxStr}}", sep = "", end = "")
+        #10
+        print("")
+        return 
+
+    #10
+
     for keys in pData[0]:#5
-        print(keys + "     ", sep = "",end = "")
+        print(f"{str(keys):<{pMaxStr}}", sep = "",end = "")
     #5
     print("")
     for vDict in pData:#3
         for keys in vDict:#4
-            print(vDict[keys] + "     ", sep = "", end = "")
+            print(f"{vDict[keys]:<{pMaxStr}}", sep = "", end = "")
         #4
         print("")
     #3
+
+
 #2
 def fMain( ): #2
 
@@ -261,7 +286,10 @@ def fMain( ): #2
     productData = fReadCsv('product.csv')
     sellData = fReadCsv('sell.csv')
     
-    print(f"productData{productData}\nsellData{sellData}")
+    #print(f"debug productData{productData}\nsellData{sellData}")
+    
+    fPrintData(pLen = len(productData), pPrompt = '\nproductData', pData = productData)
+    fPrintData(pLen = len(sellData),  pData = sellData, pPrompt = '\nsellData')
     while(True):#3
 
         print("\n#################\nSell Menu\ns sell\nv view\nq to quit: ")
@@ -269,7 +297,8 @@ def fMain( ): #2
 
         if ch.upper() == 'S': #4
             #BOOKMARK
-            fSell(sellData, productData, len(productData))
+            getLength = sellData[len(sellData) - 1]['idKey'] 
+            fSell(sellData, productData, getLength)
                               
         elif ch.upper() == 'V': #4
             #BOOKMARK

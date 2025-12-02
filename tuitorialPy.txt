@@ -104,3 +104,81 @@ subSell['amount'] = f"{float( pProductData[ret]['amount'] ) * float(strInp):.2f}
         #4
         print("")
     #3
+
+
+/////
+//  F STRING F"{}"  STR( )
+
+
+Debugging TypeError: unsupported operand type(s) for +: 'int' and 'str'
+
+The error you are seeing is a Type Error, which means you are trying to use an operation (+) on two different kinds of data (int and str) that Python doesn't know how to combine without help.
+
+Original Error Location
+
+Your code attempts to do this concatenation:
+
+print(vDict[keys] + "      ", sep = "", end = "")
+#         ^ int  +  ^ str  -> ERROR!
+
+
+SOLUTION
+
+Alternative Fix: Explicitly Convert to String
+
+If you must use the + operator, use the str() function:
+
+# Explicitly convert the integer to a string using str()
+print(str(vDict[keys]) + "      ", sep = "", end = "")
+
+
+Recommended Fix: Use F-Strings
+
+F-strings (prefixed with f) are the standard way to embed variables inside strings, and they automatically handle type conversions for display.
+
+# F-string automatically converts vDict[keys] to a string for printing.
+# Note: You can also use the default print behavior and separate arguments with commas,
+# which uses spaces as separators by default, but this preserves your original structure.
+print(f"{vDict[keys]}      ", sep = "", end = "")
+
+/////
+//F"{}"  SECOND TOPIC
+
+formatted_string = f"{truncated_string:<{max_width}}"
+
+1.  **`truncated_string`**: This is the string content we want to format (which might already be cut down to 15 characters).
+2.  **`:`**: Starts the format specification.
+3.  **`<`**: Sets the alignment to **Left-Justified**. This means any extra space needed to meet the `max_width` will be added to the *right* side of the string. (If you used `>` it would be right-justified, and `^` would be centered).
+4.  **`{max_width}`**: This dynamically inserts the value of the `max_width` variable (which is 15) as the total width of the field.
+
+Together, `:<15` tells Python: "Make this string exactly 15 characters wide, and fill any empty space on the right with whitespace."
+
+
+
+/////
+//SLICE  FORMAT   MAX STRING AND MIN STRING  PADDING
+
+When you combine this slicing technique with the formatting (padding) technique from our previous conversation, you get the robust fixed-width column:
+
+Slice (Truncate): my_string[:15]
+
+Format (Pad): f"{my_string[:15]:<15}"
+
+
+//another sample preserving it to 15chars to display and if is less will add white space in a part that is lack of chars
+nMax = 15
+
+sInp = "num"
+print(f"{sInp:<{nMax}}", sep ="", end ="")
+sInp = "date"
+print(f"{sInp:<{nMax}}", sep ="", end ="")
+sInp = "amount"
+print(f"{sInp:<{nMax}}", sep ="")
+
+
+sInp = "12345678901234567890"
+print(f"{sInp[:15]:<{nMax}}", sep ="", end ="")
+sInp = "abc"
+print(f"{sInp[:15]:<{nMax}}", sep ="", end ="")
+sInp = "def"
+print(f"{sInp[:15]:<{nMax}}", sep ="", end ="")
