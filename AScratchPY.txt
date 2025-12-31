@@ -1,0 +1,109 @@
+def add_setting(pDict, pTuple):
+    # Get the single key and value from pTuple
+    new_key = list(pTuple.keys())[0]
+    new_value = list(pTuple.values())[0]
+    
+    # Convert all existing keys to lowercase and check
+    existing_keys_lower = [k.lower() for k in pDict.keys()]
+    
+    if new_key.lower() in existing_keys_lower:
+        return f"Setting '{new_key}' already exists! Cannot add a new setting with this name"
+    else:
+        return f"Setting '{new_key}' added with a value '{new_value}' successfully"
+
+var1 = {"theme": "dark"}
+var2 = {"Theme": "light"}  # Different case but same key
+Message = add_setting(var1, var2)
+print(Message)
+```
+
+**Output:**
+```
+Setting 'Theme' already exists! Cannot add a new setting with this name
+
+########################
+# changing keys to lowercase  
+
+#version for pop
+pDict = {'ID': 1, 'NAME': "Ando", 'EMAIL': "Ando@email"}
+
+# Change 'NAME' key to lowercase
+if 'NAME' in pDict:
+    pDict['name'] = pDict.pop('NAME')  #pop the name then replace by lower
+
+print(pDict)  # {'ID': 1, 'name': 'Ando', 'EMAIL': 'Ando@email'}
+
+
+#version for del
+pDict = {'ID': 1, 'NAME': "Ando", 'EMAIL': "Ando@email"}
+
+# Change 'NAME' key to lowercase
+if 'NAME' in pDict:
+    pDict['name'] = pDict['NAME']  
+    del pDict['NAME'] #delete the uppercase
+
+print(pDict)  # {'ID': 1, 'name': 'Ando', 'EMAIL': 'Ando@email'}
+
+
+
+#####################
+#use all lower of the dict to know if is equal of lower
+
+Dict = {"name": "ando", "age": 25}
+Dict2 = {"name": "beny", "age": 30}
+
+# Check if both dicts have the same keys
+if Dict.keys() == Dict2.keys():
+    print("same keys")  # This will print
+
+# Case-insensitive comparison of all keys
+keys1 = {k.lower() for k in Dict.keys()}
+keys2 = {k.lower() for k in Dict2.keys()}
+if keys1 == keys2:
+    print("same keys (case-insensitive)")
+
+
+
+#########################################
+# replace upper case to lower case keys in dict
+
+def update_setting(pData, pInput):
+    
+    vkeys = list(pInput.keys())[0].lower()
+    vValues = list(pInput.values())[0].lower()
+
+    # Find the original key in pData (case-insensitive)
+    original_key = None
+    for k in pData.keys():
+        if k.lower() == vkeys:
+            original_key = k
+            break
+    
+    if original_key:
+        # Change the key to lowercase and update the value
+        pData[vkeys] = pData.pop(original_key)
+        pData[vkeys] = vValues
+        return f"Setting '{vkeys}' updated to value '{vValues}' successfully"
+    else:
+        return f"Setting '{vkeys}' does not exist! Cannot update a non-existing setting"
+
+
+var1 = {"COLOR": "Dark"}
+var2 = {"COLOR": "Light"}
+
+Message = update_setting(var1, var2)
+print(Message)  # Setting 'color' updated to value 'light' successfully
+print(var1)     # {'color': 'light'}
+
+
+#################################
+#filter all keys to lower case
+
+my_dict = {"Name": "John", "Age": 25, "City": "NYC"}
+
+# Convert all keys to lowercase
+lowercase_dict = {k.lower(): v for k, v in my_dict.items()} #this hols by list
+
+print(lowercase_dict)  # {'name': 'John', 'age': 25, 'city': 'NYC'}
+
+
