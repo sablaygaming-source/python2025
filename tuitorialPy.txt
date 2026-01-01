@@ -655,3 +655,27 @@ types_dict = {
 print(types_dict)
 
 
+######
+# tuple test list is tuple inside
+
+def fDispList(pList, pPrompt = "\nDisplay List"): #2
+    
+    print(pPrompt)
+    i = 0
+    for k in pList: #3
+        print(f"\nindex {i}, {k[0]}: {k[1]}")   #use keys[0] values[1] to access elements of tuple
+    #3
+    print( )
+#2
+vName = "NAME"
+vValue = "Ando"
+vDict = { "ID": 1, vName: vValue, "EMAIL": "Ando@email"} 
+
+
+vList = [ ( k.lower() , v if isinstance( v, int) else v.lower() ) for k, v in vDict.items() ]  #every element is tuple then
+											#a list of array is use
+
+fDispList(vList)
+print("\nend of aaprog")
+
+#######
