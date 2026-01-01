@@ -74,6 +74,21 @@ except ValueError:
     print("Invalid input for conversion.")
 
 
+for integer
+
+try: #5                
+                iIdKey = int(sInput)
+                if iIdKey <= 0 :#10
+                    input("\nnegative numbers and 0 is not valid use higher than 0\npress any...")
+                    continue    
+                #10
+            except ValueError as err: #5
+                input("\nmust be a pure whole number only to be input\ndo not use .0 etc...\npress any...  ")
+                continue
+            #5
+
+
+
 //////
 // FORMAT   :.2F
 
@@ -182,3 +197,461 @@ sInp = "abc"
 print(f"{sInp[:15]:<{nMax}}", sep ="", end ="")
 sInp = "def"
 print(f"{sInp[:15]:<{nMax}}", sep ="", end ="")
+
+##################
+# I got this on FreeBootCamp
+
+def add_setting(pDict, pTuple):
+
+	#if list(pDict.keys())[0].lower() == list(pTuple.keys())[0].lower(): #another way to convert to lower
+		# pDict.keys( ) return dict_keys object, list( ) is needed to convert to list of string
+
+
+    # Get the single key and value from pTuple
+    new_key = list(pTuple.keys())[0]
+    new_value = list(pTuple.values())[0]
+    
+    # Convert all existing keys to lowercase and check
+    existing_keys_lower = [k.lower() for k in pDict.keys()]
+    
+    if new_key.lower() in existing_keys_lower:
+        return f"Setting '{new_key}' already exists! Cannot add a new setting with this name"
+    else:
+        return f"Setting '{new_key}' added with a value '{new_value}' successfully"
+
+var1 = {"theme": "dark"}
+var2 = {"Theme": "light"}  # Different case but same key
+Message = add_setting(var1, var2)
+print(Message)
+```
+
+**Output:**
+```
+Setting 'Theme' already exists! Cannot add a new setting with this name
+
+########################
+# changing keys to lowercase  
+
+#version for pop
+pDict = {'ID': 1, 'NAME': "Ando", 'EMAIL': "Ando@email"}
+
+# Change 'NAME' key to lowercase
+if 'NAME' in pDict:
+    pDict['name'] = pDict.pop('NAME')  #pop the name then replace by lower
+
+print(pDict)  # {'ID': 1, 'name': 'Ando', 'EMAIL': 'Ando@email'}
+
+
+#version for del
+pDict = {'ID': 1, 'NAME': "Ando", 'EMAIL': "Ando@email"}
+
+# Change 'NAME' key to lowercase
+if 'NAME' in pDict:
+    pDict['name'] = pDict['NAME']  
+    del pDict['NAME'] #delete the uppercase
+
+print(pDict)  # {'ID': 1, 'name': 'Ando', 'EMAIL': 'Ando@email'}
+
+
+
+#####################
+#use all lower of the dict to know if is equal of lower
+
+Dict = {"name": "ando", "age": 25}
+Dict2 = {"name": "beny", "age": 30}
+
+# Check if both dicts have the same keys
+if Dict.keys() == Dict2.keys():
+    print("same keys")  # This will print
+
+# Case-insensitive comparison of all keys
+keys1 = {k.lower() for k in Dict.keys()}
+keys2 = {k.lower() for k in Dict2.keys()}
+if keys1 == keys2:
+    print("same keys (case-insensitive)")
+
+
+
+#########################################
+# replace upper case to lower case keys in dict
+
+def update_setting(pData, pInput):
+    
+    vkeys = list(pInput.keys())[0].lower()
+    vValues = list(pInput.values())[0].lower()
+
+    # Find the original key in pData (case-insensitive)
+    original_key = None
+    for k in pData.keys():
+        if k.lower() == vkeys:
+            original_key = k
+            break
+    
+    if original_key:
+        # Change the key to lowercase and update the value
+        pData[vkeys] = pData.pop(original_key)
+        pData[vkeys] = vValues
+        return f"Setting '{vkeys}' updated to value '{vValues}' successfully"
+    else:
+        return f"Setting '{vkeys}' does not exist! Cannot update a non-existing setting"
+
+
+var1 = {"COLOR": "Dark"}
+var2 = {"COLOR": "Light"}
+
+Message = update_setting(var1, var2)
+print(Message)  # Setting 'color' updated to value 'light' successfully
+print(var1)     # {'color': 'light'}
+
+
+#################################
+#filter all keys to lower case
+
+my_dict = {"Name": "John", "Age": 25, "City": "NYC"}
+
+# Convert all keys to lowercase
+lowercase_dict = {k.lower(): v for k, v in my_dict.items()} #this hols by list
+
+print(lowercase_dict)  # {'name': 'John', 'age': 25, 'city': 'NYC'}
+
+
+######################
+#dict  assigning a group
+
+pDict = {"NAME": "Ando", "AGE": 25}
+
+# Dictionary comprehension - uses { } with key:value
+vKeysDict = {k.lower(): v for k, v in pDict.items()}  # : is needed if you want to asign keys and values 
+print(vKeysDict)  # {'name': 'Ando', 'age': 25}
+print(type(vKeysDict))  # <class 'dict'>
+
+# List comprehension - uses [ ]
+vKeysList = [k.lower() for k in pDict.keys()]     # assigns list of string for keys only  
+						#u  can use solo category values  use pDict.values( )	
+print(vKeysList)  # ['name', 'age']                   
+print(type(vKeysList))  # <class 'list'>
+
+# Set comprehension - uses { } without key:value
+vKeysSet = {k.lower() for k in pDict.keys()}       # : is not needed if 1 category
+print(vKeysSet)  # {'name', 'age'}
+print(type(vKeysSet))  # <class 'set'>
+
+
+#######
+# 
+
+#wrong use of keys() and values( )
+var1.keys()  # Returns dict_keys(['ID', 'NAME', 'COLOR'])
+# var1.keys(0)  # ❌ TypeError: 'dict_keys' object is not callable
+
+# You must convert to list first:
+list(var1.keys())[0]  # ✓ Returns 'ID'
+
+
+#geting the keys and value thru list
+var1 = {"ID": 1, "NAME": "ando", "COLOR": "Dark"}
+
+keys_list = list(var1.keys())
+values_list = list(var1.values())
+
+for i in range(len(var1)):
+    print(f"Key: {keys_list[i]}, Value: {values_list[i]}")
+
+# Output:
+# Key: ID, Value: 1
+# Key: NAME, Value: ando
+# Key: COLOR, Value: Dark
+
+#same here get keys values but thru dict
+var1 = {"ID": 1, "NAME": "ando", "COLOR": "Dark"}
+
+for key, value in var1.items():
+    print(f"Key: {key}, Value: {value}")
+
+# Output:
+# Key: ID, Value: 1
+# Key: NAME, Value: ando
+# Key: COLOR, Value: Dark
+
+######
+#tuple
+
+dev = ('abc', 12, 'def')
+var = tuple(dev[i] for i in range(len(dev)))  #need to use tuple( ) function if no tuple but ( ) use it create 							#generator
+print(f"\n{var= }")  # var=('abc', 12, 'def')
+
+
+dev = ('abc', 12, 'def')
+var = tuple(v for v in dev)  # Convert generator to tuple
+print(f"\n{var= }")  # var=('abc', 12, 'def')
+
+
+dev = tuple(('abc', 12, 'def'))  #when tuple func use, need use ( ) inside data before tuple func
+var = tuple (v  for v in dev)
+
+print(f"\n{var= }")
+
+#####
+# kinds of sets
+
+# Empty set - must use set() constructor
+empty_set = set()  # ✓ Correct
+# empty_set = {}   # ❌ Wrong! This creates an empty dictionary
+
+# Set with values
+my_set = {1, 2, 3, 4, 5}
+print(my_set)  # {1, 2, 3, 4, 5}
+
+# Set with mixed types
+mixed_set = {1, 'apple', 3.14, True}
+print(mixed_set)  # {1, 3.14, 'apple'}
+
+# Set with strings
+fruits = {'apple', 'banana', 'orange'}
+print(fruits)  # {'apple', 'banana', 'orange'}
+
+
+# Empty set
+empty_set = set()
+print(empty_set)  # set()
+
+# From a list
+my_set = set([1, 2, 3, 4, 5])
+print(my_set)  # {1, 2, 3, 4, 5}
+
+# From a string (splits into characters)
+char_set = set('hello')
+print(char_set)  # {'h', 'e', 'l', 'o'}
+
+# From a tuple
+tuple_set = set((1, 2, 3))
+print(tuple_set)  # {1, 2, 3}
+
+# Duplicates are removed
+my_set = {1, 2, 2, 3, 3, 3, 4}
+print(my_set)  # {1, 2, 3, 4}
+
+# From list with duplicates
+numbers = set([1, 1, 2, 2, 3, 3])
+print(numbers)  # {1, 2, 3}
+
+
+# Create set using comprehension
+squares = {x**2 for x in range(5)}
+print(squares)  # {0, 1, 4, 9, 16}
+
+# With condition
+evens = {x for x in range(10) if x % 2 == 0}
+print(evens)  # {0, 2, 4, 6, 8}
+
+#important notes
+# Sets are unordered
+my_set = {3, 1, 4, 2}
+print(my_set)  # Order may vary: {1, 2, 3, 4}
+
+# Sets cannot contain mutable types (like lists or dictionaries)
+# invalid_set = {[1, 2], [3, 4]}  # ❌ TypeError
+
+# But can contain tuples (immutable)
+valid_set = {(1, 2), (3, 4)}  # ✓ Works
+print(valid_set)  # {(1, 2), (3, 4)}
+
+
+# Numbers
+numbers = {1, 2, 3, 4, 5}
+
+# Strings
+colors = {'red', 'green', 'blue'}
+
+# Mixed (but same type recommended)
+mixed = {1, 2, 'three', 4.0}
+
+# Empty set
+empty = set()
+
+# From range
+range_set = set(range(1, 6))
+print(range_set)  # {1, 2, 3, 4, 5}
+
+Key takeaway: Use {} for non-empty sets, and set() for empty sets!
+
+
+
+#######
+# python library how to import module 
+
+Now the import statement starts with from, followed by the name of the module, and then the import keyword followed by the name of the elements that you want to import:
+
+from module_name import name1, name2
+
+
+If you want to assign aliases to these names, you can do that by using the as keyword after each, followed by the alias you want to use:
+
+from module_name import name1 as alias1, name2 as alias2
+
+
+#####
+# view object
+
+view objects
+
+A view object in Python is a dynamic object that provides a live view of the dictionary's entries (keys, values, or items). It automatically reflects any changes made to the dictionary.
+View objects are returned by:
+
+.keys() - view of dictionary keys
+.values() - view of dictionary values
+.items() - view of key-value pairs
+
+my_dict = {'name': 'Ando', 'age': 25, 'city': 'NYC'}
+
+keys_view = my_dict.keys()
+
+# Loop through keys
+for key in keys_view:
+    print(key)
+# name
+# age
+# city
+
+
+#cannot do in view object
+my_dict = {'name': 'Ando', 'age': 25, 'city': 'NYC'}
+
+keys_view = my_dict.keys()
+
+# ❌ Cannot use indexing
+# print(keys_view[0])  # TypeError
+
+# ❌ Cannot slice
+# print(keys_view[0:2])  # TypeError
+
+# ❌ Cannot use list methods
+# keys_view.append('email')  # AttributeError
+# keys_view.sort()  # AttributeError
+
+
+#converting to diff types
+my_dict = {'name': 'Ando', 'age': 25}
+
+# Convert to list
+keys_list = list(my_dict.keys())
+print(keys_list)  # ['name', 'age']
+
+values_list = list(my_dict.values())
+print(values_list)  # ['Ando', 25]
+
+items_list = list(my_dict.items())
+print(items_list)  # [('name', 'Ando'), ('age', 25)]
+
+# Convert to tuple
+keys_tuple = tuple(my_dict.keys())
+print(keys_tuple)  # ('name', 'age')
+
+# Convert to set
+keys_set = set(my_dict.keys())
+print(keys_set)  # {'name', 'age'}
+
+
+#practical use in view object
+my_dict = {'name': 'Ando', 'age': 25, 'city': 'NYC'}
+
+keys_view = my_dict.keys()
+values_view = my_dict.values()
+items_view = my_dict.items()
+
+# Check if all keys are strings
+all_strings = all(isinstance(k, str) for k in keys_view)
+print(all_strings)  # True
+
+# Count how many values are numbers
+num_count = sum(1 for v in values_view if isinstance(v, int))
+print(num_count)  # 1
+
+# Find items where value > 20
+filtered = [(k, v) for k, v in items_view if isinstance(v, int) and v > 20]
+print(filtered)  # [('age', 25)]
+
+important notes
+Summary of what you CAN do:
+✅ Check membership (in)
+✅ Iterate with for loop
+✅ Get length with len()
+✅ Set operations (&, |, -, ^)
+✅ Use in comprehensions
+✅ Check truthiness
+❌ Cannot index (view[0])
+❌ Cannot slice (view[0:2])
+❌ Cannot use list methods
+
+
+#######
+# isinstance( )
+
+
+The isinstance() function checks if an object is an instance of a specified class or type. It's used for type checking.
+Syntax:
+pythonisinstance(object, classinfo)
+
+
+# Check if variable is a specific type
+x = 5
+print(isinstance(x, int))      # True
+print(isinstance(x, str))      # False
+
+
+#another sample in multiple
+x = 5
+
+# Check if x is int OR float
+print(isinstance(x, (int, float)))  # True
+
+name = "Ando"
+print(isinstance(name, (int, str, list)))  # True (it's a str)
+
+my_dict = {'a': 1}
+print(isinstance(my_dict, (list, tuple)))  # False
+
+
+
+########
+#try except else finally
+
+try:
+    num = int(input("Enter number: "))
+    result = 10 / num
+except ValueError:
+    print("Invalid input!")
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+else:
+    print(f"Result: {result}")
+finally:
+    print("Execution complete")
+
+
+
+######
+# enumerate with items()
+
+my_dict = {
+    "name": "Alice",
+    "age": 25,
+    "country": "Philippines"
+}
+
+for index, (key, value) in enumerate(my_dict.items()):
+    print(f"Index: {index}, Key: {key}, Value: {value}")
+
+
+
+#######
+# type showing the datatype only
+
+types_dict = {
+    k: type(v).__name__     # use type(v)  the output will be <class int>
+    for k, v in my_dict.items()
+}
+
+print(types_dict)
+
+
