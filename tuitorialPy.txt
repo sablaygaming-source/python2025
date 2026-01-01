@@ -678,4 +678,27 @@ vList = [ ( k.lower() , v if isinstance( v, int) else v.lower() ) for k, v in vD
 fDispList(vList)
 print("\nend of aaprog")
 
+
 #######
+#  .index( )  getting the index while in single line if condition
+
+#  index = subKeysLower.index(keys)
+
+
+def fUpdate(pData, pComp):
+
+    key = pComp[0].lower()
+    value = pComp[1] if isinstance(pComp[1], int) else pComp[1].lower()
+
+    subKeys = list(pData.keys())
+    subKeysLower = [k.lower() for k in pData.keys()]
+
+    if key in subKeysLower:
+        index = subKeysLower.index(key)   # 👈 get index
+        original_key = subKeys[index]     # 👈 real key name
+
+        pData[original_key] = value       # 👈 update value
+
+        return f"\nSuccessfully updated index {index}: '{original_key}' = '{value}'"
+    else:
+        return f"\nDid not find '{key}', data not saved"
