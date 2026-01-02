@@ -735,3 +735,235 @@ pData is dictionary
 
 
 
+#####
+# types of error message
+
+Python error messages primarily fall into three categories: 
+Syntax Errors, 
+Runtime Errors (Exceptions), 
+and Logical Errors. 
+
+When an error occurs, the interpreter generates a traceback, which lists the sequence of function calls and points to the specific line causing the issue. 
+
+1. Syntax Errors
+These occur when the code violates Python's structural rules. The interpreter detects these before execution, and the program will not run until they are fixed. 
+
+SyntaxError: General errors like missing colons (:), mismatched parentheses, or unclosed quotes.
+
+IndentationError: Specific to incorrect spacing, such as mixing tabs and spaces or inconsistent indentation levels. 
+
+2. Runtime Errors (Exceptions)
+These happen while the program is already running, even if the syntax is correct. 
+
+NameError: Occurs when trying to use a variable or function that hasn't been defined or is misspelled.
+
+TypeError: Raised when an operation is applied to an object of an inappropriate data type (e.g., adding a string to an integer).
+
+ValueError: Occurs when a function receives an argument of the correct type but an inappropriate value (e.g., int("abc")).
+
+IndexError: Happens when trying to access an index that is out of range for a list or sequence.
+
+KeyError: Raised when a dictionary key is not found.
+
+AttributeError: Occurs when attempting to access a method or attribute that does not exist for that object.
+
+ZeroDivisionError: Triggered when the denominator in a division operation is zero.
+FileNotFoundError: Raised when trying to open or access a file that does not exist. 
+
+3. Logical Errors
+These are the most difficult to find because the code runs without crashing or showing error messages, but it produces the wrong output. They are caused by flawed logic, such as using the wrong formula or incorrect assumptions in an algorithm. 
+
+Summary Table of Common Errors
+Error Type 	Common Cause	                          Quick Fix Tip
+
+SyntaxError	Missing colons, brackets, or quotes	Check line ending and punctuation
+
+NameError	Undefined or misspelled variable	Verify spelling and initialization
+
+TypeError	Operating on incompatible types 	Use str() or int() to convert types
+
+IndexError	Accessing out-of-bounds list index	Check sequence length with len()
+
+KeyError	Missing dictionary key			Use .get()for safe access
+
+
+
+#####
+# None and empty
+
+
+None vs “Empty” — what’s the difference?
+🔹 None
+
+Means no value / missing value
+
+Single global object
+
+Not the same as zero or empty
+
+
+x = None
+x is None        # ✅ True
+
+
+| Type    | Empty value |
+| ------- | ----------- |
+| `str`   | `""`        |
+| `list`  | `[]`        |
+| `tuple` | `()`        |
+| `dict`  | `{}`        |
+| `set`   | `set()`     |
+
+
+bool("")    # False
+bool([])    # False
+
+
+Python treats both None and empty values as falsy:
+
+if not value:
+    print("Falsy")
+
+This catches:
+
+None
+
+""
+
+0
+
+[]
+
+{}
+
+⚠️ Sometimes too broad
+
+
+How to filter None ONLY
+
+data = [1,None, 3]
+filtered = [v for v in data if v is not None]
+
+output
+filtered = [1,3]  #did not include None 
+
+Keeps empty strings/lists
+✔ Removes only None
+
+
+How to filter empty values ONLY
+
+filtered = [v for v in data if v != ""]
+
+
+filtered = [v for v in data if v]
+
+⚠️ Removes 0 and False too
+
+
+
+✅ How to filter BOTH None and empty (common case)
+filtered = [v for v in data if v not in (None, "", [], {}, ())]
+
+filtered = [v for v in data if v]
+
+
+Dictionary examples
+Remove keys with None values
+
+clean = {k: v for k, v in d.items() if v is not None}
+
+Remove keys with empty or None
+
+clean = {k: v for k, v in d.items() if v}
+
+
+
+| Goal           | Use                    |
+| -------------- | ---------------------- |
+| Check missing  | `is None`              |
+| Filter missing | `if v is not None`     |
+| Filter empty   | `if v` (careful!)      |
+| Be explicit    | Prefer explicit checks |
+
+
+
+🧩 Real-world example
+
+def normalize(value):
+    if value is None:
+        return "N/A"
+    if value == "":
+        return "Empty"
+    return value
+
+
+✅ Summary
+
+None = no value
+
+Empty = value with no content
+
+if v is powerful but broad
+
+Use is None when precision matters
+
+
+######
+# using isinstance and type
+
+isinstance not compatible in [] {} sets None use type() function 
+
+if isinstance(pVar, (int, float, str)) or isinstance(pVar, (type(None), type(""), type([]), type({}), type(set()) ) ) : #3
+        print(f"\ntrue")
+    else: #3
+
+        print(f"\nfalse")
+    #3
+
+note type function cannot be use solo in if condition 
+
+
+######
+# for type function
+
+| Goal                 | Valid                        |
+| -------------------- | ---------------------------- |
+| Filter int with type | `type(v) is int`             |
+| Compare types        | `type(v) == type(0)`         |
+| Type name (string)   | `type(v).__name__ == "int"`  |
+| ❌ Invalid            | `type(v) == "<class 'int'>"` |
+
+
+#valid codes
+if type(pVar) is int:
+    print("pVar is exactly int")
+
+if type(pVar) == type(0):
+    print("pVar is int")
+
+if type(pVar).__name__ == "int": #to make it string compare
+    print("pVar is int")
+
+
+
+######
+# block not numbers and string, putting a "" if others
+
+
+def fSort(pVar):#2
+    
+#the value None will be replace to "", all values will be received by var values
+
+    values = [ v.lower() if isinstance( v , str) else  v if isinstance( v ,(int, float) ) else "" for v in pVar.values() ]
+    print(f"\n{values=}")
+
+#2
+
+vData ={'id': 1, 'name': 'anDo', 'num': 23.04, 'comment': None}
+print(f"\nstart{vData=}")
+
+fSort(vData)  
+
+
+
