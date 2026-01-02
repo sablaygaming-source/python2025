@@ -702,3 +702,36 @@ def fUpdate(pData, pComp):
         return f"\nSuccessfully updated index {index}: '{original_key}' = '{value}'"
     else:
         return f"\nDid not find '{key}', data not saved"
+
+
+######
+#convert all keys values to small leters
+
+def fAdd(pData, pComp): #2
+
+    keys =  pComp[0].lower()
+    values = v if isinstance( pComp[1], int ) else pComp[1].lower()
+
+    subKeys = list(pData.keys())
+    subKeysLower = [v.lower() for v in list(pData.keys()) ]
+
+    for k in subKeys: #3
+        v = pData.pop(k)
+        v = v if isinstance(v, int ) else v.lower()
+        pData[k.lower()] = v 
+    #3
+
+...etc
+
+
+######
+# capitalize
+
+pData is dictionary
+
+
+ keys = [k.capitalize( ) for k in pData.keys()] #keys holds a list of capitalize string
+					# example name will be Name
+
+
+
