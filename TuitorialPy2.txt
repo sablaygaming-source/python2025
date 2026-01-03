@@ -1,0 +1,88 @@
+#####
+# zip( ) mixing those 2 or more data 
+
+    names = ["Alice", "Bob", "Charlie"]
+    ages = [25, 30, 35]
+
+    result = zip(names, ages)
+
+    for name, age in result:
+        print(name, age)
+
+    """
+    Alice 25
+    Bob 30
+    Charlie 35
+    """
+
+#####
+
+    a = [1, 2, 3]
+    b = ["x", "y"]
+
+    print(list(zip(a, b)))
+
+
+    [(1, 'x'), (2, 'y')]
+
+#####
+
+    keys = ["name", "age", "city"]
+    values = ["John", 28, "Manila"]
+
+    data = dict(zip(keys, values))
+    print(data)
+
+        
+    {'name': 'John', 'age': 28, 'city': 'Manila'}
+
+
+#####
+    names = ["Ana", "Ben", "Carl"]
+    scores = [90, 85, 88]
+
+    for i, (name, score) in enumerate(zip(names, scores)):
+        print(i, name, score)
+
+    0 Ana 90
+    1 Ben 85
+    2 Carl 88
+
+#####
+    combing list
+
+    a = [1, 2, 3]
+    b = [10, 20, 30]
+
+    sums = [x + y for x, y in zip(a, b)]
+    print(sums)
+
+    [11, 22, 33]
+
+
+#####
+    separate list
+
+    pairs = [(1, "a"), (2, "b"), (3, "c")]
+
+    numbers, letters = zip(*pairs)
+
+    print(numbers)
+    print(letters)
+
+    (1, 2, 3)
+    ('a', 'b', 'c')
+
+
+#####
+    files = ["report.txt", "data.csv", "image.png"]
+    sizes = [1200, 5400, 830]
+
+    for file, size in zip(files, sizes):
+        print(f"{file} -> {size} KB")
+
+    report.txt -> 1200 KB
+    data.csv -> 5400 KB
+    image.png -> 830 KB
+
+#########
