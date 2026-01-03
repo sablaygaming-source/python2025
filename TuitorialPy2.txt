@@ -73,7 +73,6 @@
     (1, 2, 3)
     ('a', 'b', 'c')
 
-
 #####
     files = ["report.txt", "data.csv", "image.png"]
     sizes = [1200, 5400, 830]
@@ -85,4 +84,168 @@
     data.csv -> 5400 KB
     image.png -> 830 KB
 
+
+######
+the quotes is dict
+a is keys, b is value
+
+a, b = zip(*quotes.items())
+
+
+#####
+recommended  quotes is dict
+
+converst to list the keys and values
+
+
+keys, values = map(list, zip(*quotes.items()))
+
+
+
 #########
+#using """ quotes or double quotes
+
+
+print(f"""
+'quotes': {a.text}
+'authors': {b.text}
+""")  #use triple quotes to use all single and double quotes
+
+
+print(f"\n'quotes': {a.text}\n'authors': {b.text}")  #ves versa use f" '' "  or f' "" '
+
+
+######
+# webscrapting  
+
+
+installing request module 
+
+Install using Python explicitly
+
+This avoids version issues:
+
+python -m pip install requests
+or 
+python3 -m pip install requests
+
+to verify installation
+import requests
+print(requests.__version__)
+
+⚠️ Common problems & fixes
+❌ ModuleNotFoundError: No module named 'requests'
+
+Fix:
+
+python -m pip install requests
+
+❌ pip is not recognized
+
+Fix:
+
+python -m ensurepip --upgrade
+python -m pip install --upgrade pip
+
+
+1️⃣ Copy this path
+C:\Users\RSM_CPP_NAME\AppData\Roaming\Python\Python313\Scripts
+
+2️⃣ Add to PATH (Windows 10 / 11)
+
+Press Win + S
+
+Search Environment Variables
+
+Click Edit the system environment variables
+
+Click Environment Variables
+
+Under User variables, select Path
+
+Click Edit
+
+Click New
+
+Paste the path
+
+Click OK → OK
+
+
+✅ Install bs4 (BeautifulSoup)
+✔ Recommended command
+python -m pip install beautifulsoup4
+
+
+⚠️ Note: The package name is beautifulsoup4,
+but you import it as bs4.
+
+
+🛠 If you still get the error
+1️⃣ Make sure pip matches your Python version
+python --version
+python -m pip --version
+
+They should point to the same Python.
+
+
+open this on google https://quotes.toscrape.com/ then point to the desire string quotes highlight it then right click and click inspect, debug window will show at right it can found <span etc  then in author highlight the author then right click and click inspect it can found <small etc 
+
+here is sample code
+create test.py
+
+import requests
+import csv
+from bs4 import BeautifulSoup
+
+url = "https://quotes.toscrape.com/"
+
+fsFile = open("scrapt_quotes.csv", "w")
+fsWriter = csv.writer(fsFile)
+response = requests.get(url)
+
+# check if request is successful
+if response.status_code == 200:
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # find all <h1> tags
+    quotes = soup.find_all("span", attrs = {'class': 'text'})
+    authors = soup.find_all("small", attrs = {'class': 'author'})
+    
+
+    fsWriter.writerow([ "QUOTES" , 'AUTHOR' ])
+    for a, b  in zip(quotes, authors ):
+        print(f'\n"quotes":{a.text}\n"authors": {b.text}')
+        fsWriter.writerow([ a.text , b.text ])
+        #print(title.text.strip())[]
+else:
+    print("Failed to retrieve page")
+
+    fsFile.close()
+
+
+
+"""
+#additional code for multilple
+page = 1
+all_quotes = []
+
+while True:
+    url = f"https://quotes.toscrape.com/page/{page}/"
+    html = fetch_page(url)
+    quotes = parse_quotes(html)
+
+    if not quotes:
+        break
+
+    all_quotes.extend(quotes)
+    page += 1
+    time.sleep(1)  # be polite
+
+save_to_csv(all_quotes, "all_quotes.csv")
+
+
+"""
+
+
+
