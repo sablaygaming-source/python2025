@@ -247,5 +247,140 @@ save_to_csv(all_quotes, "all_quotes.csv")
 
 """
 
+######
+# date func
 
 
+format
+| Format | Meaning    | Example |
+| ------ | ---------- | ------- |
+| `%Y`   | Year       | 2026    |
+| `%m`   | Month      | 01      |
+| `%d`   | Day        | 04      |
+| `%H`   | Hour (24h) | 21      |
+| `%M`   | Minute     | 15      |
+| `%S`   | Second     | 10      |
+
+
+functions in use
+
+| Method       | Input                  | Output   |
+| ------------ | ---------------------- | -------- |
+| `strftime()` | date / time / datetime | `str`    |
+| `strptime()` | `str`                  | datetime |
+| `.time()`    | datetime               | time     |
+| `.date()`    | datetime               | date     |
+
+
+#libraries for date
+from datetime import date, time, datetime
+
+#seting up input user date
+vDay = date(2026, 1, 4)
+vTime = time(21, 15, 10)
+
+print(f"\n{vDay=}") #out vDay=datetime.date(2026, 1, 4)
+
+#out put  2026-01-04 21:15:10
+
+#coliding day and time
+vTotal = datetime.combine(vDay, vTime)
+
+print(f"\n{vTotal=}\n{vTotal.strftime("%H:%M:%S %m/%d/%Y")=}") # out vTotal.strftime("%H:%M:%S %m/%d/%Y")='21:15:10 01/04/2026'
+
+
+d = datetime.strptime("2026-1-2", "%Y-%m-%d").date()  #sets the date by input u can set string input
+t = datetime.strptime("3:1:10", "%H:%M:%S").time()   #sets the time by input same here
+                                             #remember .date() returns date object
+					      #remember .time() return time object
+
+second = datetime.combine(d, t)
+                                                                              
+print(f"\n{second.strftime("%H:%M:%S=%Y-%m-%d")}")  #out 03:01:10=2026-01-02 
+                                                  #remeber strfttime() returns string
+
+compDateTime = datetime.now()
+compToday = date.today()
+
+print(f"\n{compDateTime.strftime("%H:%M:%S=%Y-%m-%d")=}")  #out  compDateTime.strftime("%H:%M:%S=%Y-%m-%d")='22:04:49=2026-01-04'
+
+print(f"\n{compToday.strftime("%m/%d/%Y")=}")  #out  compToday.strftime("%m/%d/%Y")='01/04/2026'
+
+
+
+from datetime import datetime
+
+def is_valid_time(value, fmt="%H:%M:%S"):
+    try:
+        datetime.strptime(value, fmt)
+        return True
+    except ValueError:
+        return False
+
+print(is_valid_time("21:15:10"))   # True
+print(is_valid_time("25:10:00"))   # False
+print(is_valid_time("21:70:10"))   # False
+print(is_valid_time("21:15"))      # False
+date format
+
+
+######
+timedelta operations
+
+from datetime import timedelta, datetime
+
+dt = datetime.strptime('1/1/2026', '%m/%d/%Y').date() #test covert to datetime object value
+tm = datetime.strptime('1:1:10', '%H:%M:%S')   #strptime returns string
+
+dt = datetime.combine(dt, tm.time())  #combine date and time returns datetime object
+                                     #convert tm.time() time() returns datetime object value
+
+next_week = dt + timedelta(days=7, minutes = 10)   #sets timedelta 7days and 10 minutes
+yesterday = dt - timedelta(days=1)
+
+
+print(next_week)
+print(yesterday)
+
+totalDays = next_week - yesterday
+
+print( str(totalDays) )  #str ( timedelta_object   )  ->returns string
+
+output: 2026-01-08 01:11:10
+        2025-12-31 01:01:10
+        8 days, 0:10:00
+
+
+#####
+
+
+from datetime import timedelta, datetime
+
+def timedelta_to_string(td):
+    total = int(td.total_seconds())
+
+    days = total // 86400
+    remainder = total % 86400
+
+    hours = remainder // 3600
+    minutes = (remainder % 3600) // 60
+    seconds = remainder % 60
+
+    return f"{days} days {hours:02}:{minutes:02}:{seconds:02}"
+
+dt = datetime(2026, 1, 1, 2, 3, 4)
+totalDays =  dt + timedelta(days=7, minutes = 10) 
+
+print("\ndate: " + str(totalDays ) )  #convert datetime to str
+print("\nwhat is the type of totalDays: " + str(type(totalDays) ) ) #convert date.time object to string using str
+
+totalDays = totalDays - dt  #to convert datetime to timedelta you must subract source datetime to totalDays
+
+s = timedelta_to_string(totalDays)
+print(s)
+
+output:
+date: 2026-01-08 02:13:04
+
+what is the type of totalDays: <class 'datetime.datetime'>
+7 days 00:10:00
