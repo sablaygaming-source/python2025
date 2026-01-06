@@ -115,6 +115,25 @@ print(f"""
 print(f"\n'quotes': {a.text}\n'authors': {b.text}")  #ves versa use f" '' "  or f' "" '
 
 
+#####
+# multiple list of dict
+
+vData = {'elem1': [1,2,3], 'elem2': ['aa','bb','cc'], 'elem3': ['ando','boni','carlo']}
+
+rows = [ dict( zip( vData.keys( ), val ) ) for val in zip(*vData.values()  )]  #zip(*vData.values() has group 1, 'aa', 'ando' and so on
+                                                                           #then  zip( vData.keys( ), val )  has group keys elem1, values 1, 'aa', 'ando' it is
+                                                                         # group together and convert it to dict the 
+                                                                         #result is {'elem1': 1, 'elem2': 'aa', 'elem3': 'ando'}
+	                                                                   #
+
+print(type(zip(*vData.values() )))
+print(rows)
+
+output:
+<class 'zip'>
+[{'elem1': 1, 'elem2': 'aa', 'elem3': 'ando'}, {'elem1': 2, 'elem2': 'bb', 'elem3': 'boni'}, {'elem1': 3, 'elem2': 'cc', 'elem3': 'carlo'}]
+
+
 ######
 # webscrapting  
 
@@ -384,3 +403,37 @@ date: 2026-01-08 02:13:04
 
 what is the type of totalDays: <class 'datetime.datetime'>
 7 days 00:10:00
+
+
+"""
+
+from datetime import timedelta
+
+parameter
+timedelta(
+    days=0,
+    seconds=0,
+    microseconds=0,
+    milliseconds=0,
+    minutes=0,
+    hours=0,
+    weeks=0
+)
+
+parameter details       
+| Parameter      | Meaning       |
+| -------------- | ------------- |
+| `weeks`        | 7 days each   |
+| `days`         | 24 hours      |
+| `hours`        | 3600 seconds  |
+| `minutes`      | 60 seconds    |
+| `seconds`      | base unit     |
+| `milliseconds` | 1/1000 second |
+| `microseconds` | smallest unit |
+
+return datetime.timedelta  object
+
+"""
+
+
+
