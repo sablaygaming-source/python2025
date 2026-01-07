@@ -435,5 +435,18 @@ return datetime.timedelta  object
 
 """
 
+#####
+#using any( )
+
+
+a = [1, 2, 3]
+b = ['one', 'two', 'three']
+
+vZip = zip(a, b)  #zip() returns an iterator, not a list.
+
+if any(item == (1, 'one') for item in vZip):
+    print("\nyes i found it")
+else:
+    print("\nNo i didnt found it")
 
 
